@@ -10,10 +10,10 @@ class GameClient {
         // setup()
         welcomeScreen();
         playerSetup();
-        // playSJ()
-        // playDJ()
-        // playFJ()
-        // displayResults()
+        playSJ();
+        playDJ();
+        playFJ();
+        displayResults();
 
     }
 
@@ -47,54 +47,68 @@ class GameClient {
     }
 
     public static void playerSetup() {
-        String rules = null;
+        displayBanner("rules.txt");
+
+        // Prompt for user name
+    }
+
+    public static void playSJ() {
+        displayBanner("sj.txt");
+
+        System.out.println("** BOARD TO BE DISPLAYED **");
+        // display board
+        // loop
+        //     prompt for category
+        //     prompt for value
+        //     gameBoard methods
+
+        displayBanner("sjComplete.txt");
+        Console.pause(1500L);
+    }
+
+    public static void playDJ() {
+        displayBanner("dj.txt");
+
+        System.out.println("** BOARD TO BE DISPLAYED **");
+        // display board
+        // loop
+        //     prompt for category
+        //     prompt for value
+        //     gameBoard methods
+
+        displayBanner("djComplete.txt");
+        Console.pause(1500L);
+
+    }
+
+    public static void playFJ() {
+        displayBanner("fj.txt");
+
+        // display question
+        // prompt for answer
+
+        Console.clear();
+        // display answer and player question result
+
+    }
+
+    public static void displayResults() {
+        displayBanner("gameOver.txt");
+
+        // Player name with score
+    }
+
+    private static void displayBanner(String target) {
+        String banner = null;
 
         try {
-            rules = Files.readString(Path.of("images/rules.txt"));
+            banner = Files.readString(Path.of("images/" + target));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Console.clear();
-        System.out.println(rules);
-        Console.pause(1500L);
-
-        // Prompt for user name
-    }
-
-    private void playSJ() {
-        // SJ banner
-        // display board
-        // loop
-        //     prompt for category
-        //     prompt for value
-        //     gameBoard methods
-        // End of SJ banner
-
-    }
-
-    private void playDJ() {
-        // DJ banner
-        // display board
-        // loop
-        //     prompt for category
-        //     prompt for value
-        //     gameBoard methods
-        // End of DJ banner
-
-    }
-
-    private void playFJ() {
-        // FJ banner
-        // display question
-        // prompt for answer
-        // display answer and player question result
-
-    }
-
-    private void displayResults() {
-        // End of game banner
-        // Player name with score
-
+        System.out.println(banner);
+        Console.blankLines(3);
     }
 }
