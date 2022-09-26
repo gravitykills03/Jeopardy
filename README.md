@@ -23,3 +23,14 @@ Project based on the late and great Alex Trebek.
   - Delete the branch after the merge screen on github.com
   - Notify the team that a merge has been completed. ALL teammembers will update their main branch in IntelliJ (refer to step 4)
   - In IntelliJ, delete the branch you just merged.
+
+## Pull Request Reviews
+
+1) Open the PR you are listed as a reviewer on.
+  - Pull Requests tab
+  - Files changed tab
+2) Review the files changed and code changed / added
+3) Comment if necessary
+  - If you see some code errors, press the '+' sign on the code line and add your comment
+4) Submit Review
+  - Top right screen "Review Changes" button.  Select the option you deem fit and send
