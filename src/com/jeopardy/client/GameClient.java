@@ -1,10 +1,14 @@
 package com.jeopardy.client;
 
+import com.apps.util.Console;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 class GameClient {
     public static void main(String[] args) {
-
         // setup()
-        // welcomeScreen()
+        welcomeScreen();
         // playerSetup()
         // playSJ()
         // playDJ()
@@ -19,10 +23,27 @@ class GameClient {
         // maybe in main?
     }
 
-    private void welcomeScreen() {
-        // splast art welcome
-        // maybe transitions with multiple welcomes
+    public static void welcomeScreen() {
+        String welcome = null;
+        String credits = null;
 
+        try {
+            welcome = Files.readString(Path.of("images/welcome.txt"));
+            credits = Files.readString(Path.of("images/credits.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Console.clear();
+        System.out.println(welcome);
+
+        Console.pause(1500L);
+        Console.clear();
+
+        System.out.println(credits);
+
+        Console.pause(1500L);
+        Console.clear();
     }
 
     private void playerSetup() {
