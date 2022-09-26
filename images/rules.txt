@@ -1,0 +1,39 @@
+
+
+                         _   _____    ___    ____       _      ____    ____   __   __
+                        | | | ____|  / _ \  |  _ \     / \    |  _ \  |  _ \  \ \ / /
+                     _  | | |  _|   | | | | | |_) |   / _ \   | |_) | | | | |  \ V /
+                    | |_| | | |___  | |_| | |  __/   / ___ \  |  _ <  | |_| |   | |
+                     \___/  |_____|  \___/  |_|     /_/   \_\ |_| \_\ |____/    |_|
+
+
+Welcome to JEOPARDY! Created by Trebek's Legacy LLC!
+
+Please read the below "HOW-TO" before you begin! Once complete, enter the player name at the bottom!
+
+HOW-TO:
+  - After entering name, follow prompts to play!
+  - The game board will be displayed with the following below:
+
+        1 - CategoryA
+        2 - CategoryB
+
+        Please enter a question category (1, 2):
+
+  - At the above prompt, enter a 1 or 2 based on the desired category.
+  - The following prompt will then show after a correct entry:
+
+        Please enter a question value:
+
+  - Enter a value shown on the board! Once a question is answered, the value will no longer show!
+  - Continue until all questions are answered and all rounds complete!
+
+* SPECIALS *
+
+  - If a DAILY DOUBLE is shown, you will see a prompt asking for your wager. You can wager up-to your
+    current money total
+
+  - For FINAL JEOPARDY, you must commit to a wager before the question is shown.
+
+
+Thank you again for playing! GOOD LUCK!

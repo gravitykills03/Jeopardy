@@ -9,7 +9,7 @@ class GameClient {
     public static void main(String[] args) {
         // setup()
         welcomeScreen();
-        // playerSetup()
+        playerSetup();
         // playSJ()
         // playDJ()
         // playFJ()
@@ -46,11 +46,20 @@ class GameClient {
         Console.clear();
     }
 
-    private void playerSetup() {
-        // Jeopardy banner
-        // Display rules
-        // Prompt for user name
+    public static void playerSetup() {
+        String rules = null;
 
+        try {
+            rules = Files.readString(Path.of("images/rules.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Console.clear();
+        System.out.println(rules);
+        Console.pause(1500L);
+
+        // Prompt for user name
     }
 
     private void playSJ() {
