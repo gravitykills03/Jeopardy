@@ -19,33 +19,14 @@ public class GameBoard {
         player = new Player();
         singleJeopardyBoard = new LinkedHashMap<>();
         doubleJeopardyBoard = new LinkedHashMap<>();
-        displayTokens();
         setupData();
     }
 
-    private void displayTokens() {
-        try {
-            List<String> lines = Files.readAllLines(Path.of(singJeopFilePath));
-            SingleJeopardyDollar[] singleEnumValues = SingleJeopardyDollar.values();
-
-            for(int i = 0; i < 6; ++i) {
-                Question q = new Question();
-                String line = lines.get(i);
-                String[] tokens = line.split(",");
-
-                q.setQuestion(tokens[0]);
-                q.setAnswer(tokens[1]);
-                q.setValue(Integer.parseInt(tokens[2]));
-
-                String currEnum = singleEnumValues[i].toString();
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void setupData() {
+        Random rand = new Random();
+        int upperBound = 6;
+        int dailyDoubleQuestion = rand.nextInt(upperBound);
+
         try {
             List<String> lines = Files.readAllLines(Path.of(singJeopFilePath));
             SingleJeopardyDollar[] singleEnumValues = SingleJeopardyDollar.values();
@@ -58,6 +39,10 @@ public class GameBoard {
                 q.setQuestion(tokens[0]);
                 q.setAnswer(tokens[1]);
                 q.setValue(Integer.parseInt(tokens[2]));
+
+                if (i == dailyDoubleQuestion) {
+                    q.setDailyDouble(true);
+                }
 
                 String currEnum = singleEnumValues[i].toString();
 
@@ -79,6 +64,10 @@ public class GameBoard {
                 q.setQuestion(tokens[0]);
                 q.setAnswer(tokens[1]);
                 q.setValue(Integer.parseInt(tokens[2]));
+
+                if (i == dailyDoubleQuestion) {
+                    q.setDailyDouble(true);
+                }
 
                 String currEnum = doubleEnumValues[i].toString();
 
@@ -146,6 +135,7 @@ public class GameBoard {
         Prompter prompter = new Prompter(new Scanner(System.in));
         boolean validQuestion = false;
         boolean correctAnswer = false;
+        int questionValue;
         String valueInput;
         String key;
         String categoryInput;
@@ -161,29 +151,18 @@ public class GameBoard {
 
             questionRequested = singleJeopardyBoard.get(key);
 
-
             if (!questionRequested.isAnswered()) {
                 validQuestion = true;
             }
         }
 
+        questionValue = (questionRequested.isDailyDouble()) ? dailyDoubleWager() : questionRequested.getValue();
+
         System.out.printf("\n\n");
         System.out.println(questionRequested.getQuestion());
         answer = prompter.prompt("Please input answer: ");
 
-        correctAnswer = validateAnswer(answer, questionRequested);
-
-        if (correctAnswer) {
-            System.out.println("CORRECT ANSWER!!\tMoney Added: " + questionRequested.getValue());
-            player.addMoney(questionRequested.getValue());
-        }
-        else {
-            System.out.println("INCORRECT ANSWER!!\tMoney Taken: " + questionRequested.getValue());
-            player.subtractMoney(questionRequested.getValue());
-        }
-
-        questionRequested.setAnswered(true);
-
+        validateAnswer(answer, questionRequested, questionValue);
         Console.pause(2000L);
     }
 
@@ -191,6 +170,7 @@ public class GameBoard {
         Prompter prompter = new Prompter(new Scanner(System.in));
         boolean validQuestion = false;
         boolean correctAnswer = false;
+        int questionValue;
         String valueInput;
         String key;
         String categoryInput;
@@ -206,29 +186,18 @@ public class GameBoard {
 
             questionRequested = doubleJeopardyBoard.get(key);
 
-
             if (!questionRequested.isAnswered()) {
                 validQuestion = true;
             }
         }
 
+        questionValue = (questionRequested.isDailyDouble()) ? dailyDoubleWager() : questionRequested.getValue();
+
         System.out.printf("\n\n");
         System.out.println(questionRequested.getQuestion());
         answer = prompter.prompt("Please input answer: ");
 
-        correctAnswer = validateAnswer(answer, questionRequested);
-
-        if (correctAnswer) {
-            System.out.println("CORRECT ANSWER!!\tMoney Added: " + questionRequested.getValue());
-            player.addMoney(questionRequested.getValue());
-        }
-        else {
-            System.out.println("INCORRECT ANSWER!!\tMoney Taken: " + questionRequested.getValue());
-            player.subtractMoney(questionRequested.getValue());
-        }
-
-        questionRequested.setAnswered(true);
-
+        validateAnswer(answer, questionRequested, questionValue);
         Console.pause(2000L);
     }
 
@@ -241,7 +210,7 @@ public class GameBoard {
         boolean result = true;
 
         for(Map.Entry<String, Question> value : singleJeopardyBoard.entrySet()) {
-            if (value.getValue().isAnswered() == false) {
+            if (!value.getValue().isAnswered()) {
                 result = false;
                 break;
             }
@@ -254,7 +223,7 @@ public class GameBoard {
         boolean result = true;
 
         for(Map.Entry<String, Question> value : doubleJeopardyBoard.entrySet()) {
-            if (value.getValue().isAnswered() == false) {
+            if (!value.getValue().isAnswered()) {
                 result = false;
                 break;
             }
@@ -267,8 +236,49 @@ public class GameBoard {
         System.out.println(player.getName() + " = " + player.getMoney());
     }
 
-    private boolean validateAnswer(String answer, Question question) {
-        return question.getAnswer().equalsIgnoreCase(answer);
+    private void validateAnswer(String answer, Question question, int questionValue) {
+        boolean result = question.getAnswer().equalsIgnoreCase(answer);
+
+        if (result) {
+            System.out.printf("CORRECT!!\tAnswer = %s\nMoney Added: %d\n", question.getAnswer(), questionValue);
+            player.addMoney(questionValue);
+        }
+        else {
+            System.out.printf("INCORRECT!!\tAnswer = %s\nMoney Taken: %d\n", question.getAnswer(), questionValue);
+            player.subtractMoney(questionValue);
+        }
+
+        question.setAnswered(true);
+    }
+
+    private int dailyDoubleWager() {
+        Prompter prompter = new Prompter(new Scanner(System.in));
+        boolean validWager = false;
+        int wager = 0;
+
+        System.out.print("\n\n\nDAILY DOUBLE!!!\n");
+        while (!validWager) {
+            wager = Integer.parseInt(prompter.prompt("Enter your wager: "));
+
+            if (player.getMoney() < 0) {
+                if (wager < 100 || wager > 600) {
+                    System.out.println("The wager range is [100, 600] while in a negative balance!");
+                }
+                else {
+                    validWager = true;
+                }
+            }
+            else {
+                if (wager < 100 || wager > player.getMoney()) {
+                    System.out.println("The wager range is [100, " + player.getMoney() + "]!");
+                }
+                else {
+                    validWager = true;
+                }
+            }
+        }
+
+        return wager;
     }
 
     // timer()
