@@ -4,17 +4,20 @@ public class Player {
     private String name;
     private int money;
 
+    public Player() {
+    }
+
     public Player(String name, int money) {
         this.name = name;
         this.money = money;
     }
 
     public void addMoney(int value) {
-        this.money += money;
+        this.money += value;
     }
 
     public void subtractMoney(int value) {
-       this.money -= money;
+       this.money -= value;
     }
 
     public String getName() {
@@ -23,6 +26,10 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public int getMoney() {
