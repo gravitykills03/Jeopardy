@@ -1,26 +1,25 @@
 package com.jeopardy.client;
 
 import com.apps.util.Console;
+import com.apps.util.Prompter;
+import com.jeopardy.GameBoard;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 class GameClient {
     public static void main(String[] args) {
-        // setup()
+
+        GameBoard gb = new GameBoard();
         welcomeScreen();
-        playerSetup();
-        playSJ();
-        playDJ();
+        playerSetup(gb);
+        playSJ(gb);
+        playDJ(gb);
         playFJ();
         displayResults();
 
-    }
-
-    private void setup() {
-        // new gameboard
-        // populate gameboard with questions
-        // maybe in main?
     }
 
     public static void welcomeScreen() {
@@ -46,35 +45,47 @@ class GameClient {
         Console.clear();
     }
 
-    public static void playerSetup() {
+    public static void playerSetup(GameBoard gameBoard) {
+        Prompter prompter = new Prompter(new Scanner(System.in));
         displayBanner("rules.txt");
 
-        // Prompt for user name
+        String name = prompter.prompt("Enter player name: ");
+        gameBoard.playerSetup(name);
     }
 
-    public static void playSJ() {
-        displayBanner("sj.txt");
+    public static void playSJ(GameBoard gameBoard) {
+        while(!gameBoard.isJeopardyComplete()) {
+            displayBanner("sj.txt");
 
-        System.out.println("** BOARD TO BE DISPLAYED **");
-        // display board
-        // loop
-        //     prompt for category
-        //     prompt for value
-        //     gameBoard methods
+            gameBoard.displaySingleJeopardyBoard();
+            System.out.println();
+            System.out.println("SCORE:");
+            System.out.print("\t");
+            gameBoard.displayResult();
+            System.out.print("\n\n");
+
+            gameBoard.promptForQuestion();
+            Console.clear();
+        }
 
         displayBanner("sjComplete.txt");
         Console.pause(1500L);
     }
 
-    public static void playDJ() {
-        displayBanner("dj.txt");
+    public static void playDJ(GameBoard gameBoard) {
+        while(!gameBoard.isDoubleJeopardyComplete()) {
+            displayBanner("dj.txt");
 
-        System.out.println("** BOARD TO BE DISPLAYED **");
-        // display board
-        // loop
-        //     prompt for category
-        //     prompt for value
-        //     gameBoard methods
+            gameBoard.displayDoubleJeopardyBoard();
+            System.out.println();
+            System.out.println("\t\tSCORE:");
+            System.out.print("\t\t\t");
+            gameBoard.displayResult();
+            System.out.print("\n\n");
+
+            gameBoard.promptForDJQuestion();
+            Console.clear();
+        }
 
         displayBanner("djComplete.txt");
         Console.pause(1500L);
