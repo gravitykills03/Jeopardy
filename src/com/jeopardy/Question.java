@@ -19,28 +19,6 @@ class Question {
     public Question() {
     }
 
-    public Question(String question) {
-        this.question = question;
-    }
-
-    public Question(String question, String answer) {
-        this.question = question;
-        this.answer = answer;
-    }
-
-    public Question(String question, String answer, String category) {
-        this.question = question;
-        this.answer = answer;
-        this.category = category;
-    }
-
-    public Question(String question, String answer, String category, int value) {
-        this.question = question;
-        this.answer = answer;
-        this.category = category;
-        this.value = value;
-    }
-
     public boolean isValidateAnswer() {
         return validateAnswer;
     }
