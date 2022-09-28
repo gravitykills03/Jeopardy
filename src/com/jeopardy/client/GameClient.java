@@ -17,9 +17,8 @@ class GameClient {
         playerSetup(gb);
         playSJ(gb);
         playDJ(gb);
-        playFJ();
-        displayResults();
-
+        playFJ(gb);
+        displayResults(gb);
     }
 
     public static void welcomeScreen() {
@@ -41,7 +40,7 @@ class GameClient {
 
         System.out.println(credits);
 
-        Console.pause(1500L);
+        Console.pause(2500L);
         Console.clear();
     }
 
@@ -69,7 +68,7 @@ class GameClient {
         }
 
         displayBanner("sjComplete.txt");
-        Console.pause(1500L);
+        Console.pause(2500L);
     }
 
     public static void playDJ(GameBoard gameBoard) {
@@ -88,25 +87,31 @@ class GameClient {
         }
 
         displayBanner("djComplete.txt");
-        Console.pause(1500L);
+        Console.pause(2500L);
 
     }
 
-    public static void playFJ() {
+    public static void playFJ(GameBoard gb) {
         displayBanner("fj.txt");
+        System.out.println();
+        System.out.println("\t\tSCORE:");
+        System.out.print("\t\t\t");
+        gb.displayResult();
+        System.out.print("\n\n");
 
-        // display question
-        // prompt for answer
+        gb.promptForFinalJeopardyQuestion();
 
+        Console.pause(2500L);
         Console.clear();
-        // display answer and player question result
-
     }
 
-    public static void displayResults() {
+    public static void displayResults(GameBoard gb) {
         displayBanner("gameOver.txt");
-
-        // Player name with score
+        System.out.println();
+        System.out.println("FINAL SCORE!!");
+        gb.displayResult();
+        System.out.printf("\nTHANK YOU FOR PLAYING!!");
+        System.out.printf("\n\nCopyright 2022 - Trebek's Legacy LLC");
     }
 
     private static void displayBanner(String target) {
