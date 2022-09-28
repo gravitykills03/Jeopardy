@@ -1,6 +1,6 @@
 package com.jeopardy;
 
-class Question {
+public class Question {
 
     private String question;
     private String answer;
