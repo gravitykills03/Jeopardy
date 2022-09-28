@@ -9,26 +9,36 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class GameBoard {
-    private static final String singJeopFilePath = "lists/questions1.csv";
-    private static final String doubJeopFilePath = "lists/questions2.csv";
+    private static final String SINGLE_JEOPARDY_FILE_PATH = "lists/questions1.csv";
+    private static final String DOUBLE_JEOPARDY_FILE_PATH = "lists/questions2.csv";
     private Player player;
-    Map<String, Question> singleJeopardyBoard;
-    Map<String, Question> doubleJeopardyBoard;
+    private Prompter prompter;
+    private Map<String, Question> singleJeopardyBoard;
+    private Map<String, Question> doubleJeopardyBoard;
 
+    /**
+     * GameBoard constructor
+     * Initializes player, singleJeopardyBoard, and doubleJeopardyBoard
+     * Calls helper method setupData() for populating data
+     */
     public GameBoard() {
         player = new Player();
+        prompter = new Prompter(new Scanner(System.in));
         singleJeopardyBoard = new LinkedHashMap<>();
         doubleJeopardyBoard = new LinkedHashMap<>();
         setupData();
     }
 
+    /**
+     * Helper method to assist the constructor in filling the Map<> variables with data
+     */
     private void setupData() {
         Random rand = new Random();
         int upperBound = 6;
         int dailyDoubleQuestion = rand.nextInt(upperBound);
 
         try {
-            List<String> lines = Files.readAllLines(Path.of(singJeopFilePath));
+            List<String> lines = Files.readAllLines(Path.of(SINGLE_JEOPARDY_FILE_PATH));
             SingleJeopardyDollar[] singleEnumValues = SingleJeopardyDollar.values();
 
             for(int i = 0; i < 6; ++i) {
@@ -55,7 +65,7 @@ public class GameBoard {
         dailyDoubleQuestion = rand.nextInt(upperBound);
 
         try {
-            List<String> lines = Files.readAllLines(Path.of(doubJeopFilePath));
+            List<String> lines = Files.readAllLines(Path.of(DOUBLE_JEOPARDY_FILE_PATH));
             DoubleJeopardyDollar[] doubleEnumValues = DoubleJeopardyDollar.values();
 
             for(int i = 0; i < 6; ++i) {
@@ -80,9 +90,83 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Helper method to validate an answer inputted by player
+     * Inputted answer and actual answer are compared with .equalsIgnoreCase()
+     *
+     * @param answer - String for user inputted answer
+     * @param question - Question object that holds relevant question
+     * @param questionValue - int for the score value of the question
+     */
+    private void validateAnswer(String answer, Question question, int questionValue) {
+        boolean result = question.getAnswer().equalsIgnoreCase(answer);
+
+        if (result) {
+            System.out.printf("CORRECT!!\tAnswer = %s\nMoney Added: %d\n", question.getAnswer(), questionValue);
+            player.addMoney(questionValue);
+        }
+        else {
+            System.out.printf("INCORRECT!!\tAnswer = %s\nMoney Taken: %d\n", question.getAnswer(), questionValue);
+            player.subtractMoney(questionValue);
+        }
+
+        question.setAnswered(true);
+    }
+
+    /**
+     * Helper method called when the question object is flagged as a DailyDouble.
+     * This method prompts the user for a specified wager adhering to Daily Double rules.
+     *
+     * @return - int - wager specified by player
+     */
+    private int dailyDoubleWager() {
+        boolean validWager = false;
+        int wager = 0;
+
+        System.out.print("\n\n\nDAILY DOUBLE!!!\n");
+        while (!validWager) {
+            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be at least 3 digits (i.e: 100)");
+
+            wager = Integer.parseInt(wagerString);
+
+            if (player.getMoney() <= 0) {
+                if (wager < 100 || wager > 600) {
+                    System.out.println("The wager range is [100, 600] while in a non-positive balance!");
+                }
+                else {
+                    validWager = true;
+                }
+            }
+            else {
+                if (wager < 100 || wager > player.getMoney()) {
+                    System.out.println("The wager range is [100, " + player.getMoney() + "]!");
+                }
+                else {
+                    validWager = true;
+                }
+            }
+        }
+
+        return wager;
+    }
+
+    /**
+     * Method to fill the player variable with necessary data.
+     *
+     * @param name - String - name given by user
+     */
+    public void playerSetup(String name) {
+        player.setName(name);
+        player.setMoney(0);
+    }
+
+    /**
+     * Displays the relevant jeopardy board to console.
+     * Displays the categories followed by question values in a grid format
+     */
     public void displaySingleJeopardyBoard() {
-        System.out.printf("%26s\t\t\t| %16s\n", "BATMAN", "STAR WARS");
-        System.out.println("             ___________________________________________________");
+        System.out.printf("%26s\t  | %17s\n", "BATMAN", "STAR WARS");
+        System.out.println("\t\t______________________________________");
 
 
         int questionCount = 1;
@@ -106,10 +190,13 @@ public class GameBoard {
         }
     }
 
-
+    /**
+     * Displays the relevant jeopardy board to console.
+     * Displays the categories followed by question values in a grid format
+     */
     public void displayDoubleJeopardyBoard() {
-        System.out.printf("%33s\t\t\t\t| %20s\n", "THOR", "STAR TREK");
-        System.out.println("\t\t\t\t\t\t___________________________________________________");
+        System.out.printf("%33s\t  | %16s\n", "THOR", "STAR TREK");
+        System.out.println("\t\t\t_________________________________________");
 
 
         int questionCount = 1;
@@ -117,10 +204,20 @@ public class GameBoard {
             Question tempQ = value.getValue();
 
             if (!tempQ.isAnswered()) {
-                System.out.printf("%33d", tempQ.getValue());
+                // if second question, reduce spacing for display
+                if (questionCount == 2) {
+                    System.out.printf("%25d", tempQ.getValue());
+                } else {
+                    System.out.printf("%33d", tempQ.getValue());
+                }
             }
             else {
-                System.out.printf("%33s", "   ");
+                // if second question, reduce spacing for display
+                if (questionCount == 2) {
+                    System.out.printf("%25s", "   ");
+                } else {
+                    System.out.printf("%33s", "   ");
+                }
             }
 
             if (questionCount == 2) {
@@ -133,8 +230,14 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Method that prompts the player to enter the necessary information to retrieve the relevant
+     * question object.
+     * When question object is retrieved, the question is displayed and the player is prompted to answer.
+     * After an answer is given, the method calls necessary helper methods to validate answer and update the player
+     * score appropriately
+     */
     public void promptForQuestion() {
-        Prompter prompter = new Prompter(new Scanner(System.in));
         boolean validQuestion = false;
         boolean correctAnswer = false;
         int questionValue;
@@ -168,8 +271,14 @@ public class GameBoard {
         Console.pause(2000L);
     }
 
-    public void promptForDJQuestion() {
-        Prompter prompter = new Prompter(new Scanner(System.in));
+    /**
+     * Method that prompts the player to enter the necessary information to retrieve the relevant
+     * question object.
+     * When question object is retrieved, the question is displayed and the player is prompted to answer.
+     * After an answer is given, the method calls necessary helper methods to validate answer and update the player
+     * score appropriately
+     */
+    public void promptForDoubleJeopardyQuestion() {
         boolean validQuestion = false;
         boolean correctAnswer = false;
         int questionValue;
@@ -203,47 +312,18 @@ public class GameBoard {
         Console.pause(2000L);
     }
 
-    public void playerSetup(String name) {
-        player.setName(name);
-        player.setMoney(0);
-    }
-
-    public boolean isJeopardyComplete() {
-        boolean result = true;
-
-        for(Map.Entry<String, Question> value : singleJeopardyBoard.entrySet()) {
-            if (!value.getValue().isAnswered()) {
-                result = false;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    public boolean isDoubleJeopardyComplete() {
-        boolean result = true;
-
-        for(Map.Entry<String, Question> value : doubleJeopardyBoard.entrySet()) {
-            if (!value.getValue().isAnswered()) {
-                result = false;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    public void displayResult() {
-        System.out.println(player.getName() + " = " + player.getMoney());
-    }
-
+    /**
+     * Method to run final jeopardy round.
+     * Method determines if player is elgible for round (score > 100) and if so prompts for a valid wager.
+     * Method then displays the final question of the game and prompts for answer.
+     * After an answer is given, the method calls necessary helper methods to validate answer and update the player
+     * score appropriately
+     */
     public void promptForFinalJeopardyQuestion() {
-        Prompter prompter = new Prompter(new Scanner(System.in));
         boolean validWager = false;
         boolean validAnswer = true;
         boolean isReady = false;
-        String question = "What is the last name of this famous British actor who played Scotty in the new Star Trek reboot?";
+        String question = "What is the last name of this famous British actor who played Scotty in the new Star Trek reboot?: ";
         String answer = "Pegg";
         String readyInput;
         String finalQuestionPlayerAnswer;
@@ -266,7 +346,7 @@ public class GameBoard {
         }
 
         while (!validWager) {
-            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be greater than 100.");
+            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be at least 3 digits (i.e: 100)");
 
             wager = Integer.parseInt(wagerString);
 
@@ -292,48 +372,48 @@ public class GameBoard {
         }
     }
 
-    private void validateAnswer(String answer, Question question, int questionValue) {
-        boolean result = question.getAnswer().equalsIgnoreCase(answer);
+    /**
+     * Method to determine when the relevant jeopardy round is complete.
+     * If a question object is not answered, returns false.
+     *
+     * @return - boolean on if the round is complete
+     */
+    public boolean isJeopardyComplete() {
+        boolean result = true;
 
-        if (result) {
-            System.out.printf("CORRECT!!\tAnswer = %s\nMoney Added: %d\n", question.getAnswer(), questionValue);
-            player.addMoney(questionValue);
-        }
-        else {
-            System.out.printf("INCORRECT!!\tAnswer = %s\nMoney Taken: %d\n", question.getAnswer(), questionValue);
-            player.subtractMoney(questionValue);
+        for(Map.Entry<String, Question> value : singleJeopardyBoard.entrySet()) {
+            if (!value.getValue().isAnswered()) {
+                result = false;
+                break;
+            }
         }
 
-        question.setAnswered(true);
+        return result;
     }
 
-    private int dailyDoubleWager() {
-        Prompter prompter = new Prompter(new Scanner(System.in));
-        boolean validWager = false;
-        int wager = 0;
+    /**
+     * Method to determine when the relevant jeopardy round is complete.
+     * If a question object is not answered, returns false.
+     *
+     * @return - boolean on if the round is complete
+     */
+    public boolean isDoubleJeopardyComplete() {
+        boolean result = true;
 
-        System.out.print("\n\n\nDAILY DOUBLE!!!\n");
-        while (!validWager) {
-            wager = Integer.parseInt(prompter.prompt("Enter your wager: "));
-
-            if (player.getMoney() <= 0) {
-                if (wager < 100 || wager > 600) {
-                    System.out.println("The wager range is [100, 600] while in a non-positive balance!");
-                }
-                else {
-                    validWager = true;
-                }
-            }
-            else {
-                if (wager < 100 || wager > player.getMoney()) {
-                    System.out.println("The wager range is [100, " + player.getMoney() + "]!");
-                }
-                else {
-                    validWager = true;
-                }
+        for(Map.Entry<String, Question> value : doubleJeopardyBoard.entrySet()) {
+            if (!value.getValue().isAnswered()) {
+                result = false;
+                break;
             }
         }
 
-        return wager;
+        return result;
+    }
+
+    /**
+     * Method to display the player information
+     */
+    public void displayPlayerWithScore() {
+        System.out.println(player);
     }
 }
