@@ -254,10 +254,10 @@ class GameBoard {
         Question questionRequested = null;
 
         while (!validQuestion) {
-            categoryInput = prompter.prompt("Please enter the question category: ", "BATMAN|STAR WARS", "Invalid category. Please choose from the following (case sensitive): BATMAN, STAR WARS\n");
+            categoryInput = prompter.prompt("Please enter the question category: ", "(?i)BATMAN|STAR WARS", "Invalid category. Please choose from the following: BATMAN, STAR WARS\n");
             valueInput = prompter.prompt("Please enter the question value: ", "100|200|300", "Invalid value.  Please enter one of the following: 100, 200, 300\n");
 
-            key = categoryInput + "_" + valueInput;
+            key = categoryInput.toUpperCase() + "_" + valueInput.toUpperCase();
             key = key.replace(" ", "_"); // BATMAN 100 -> BATMAN_100  || STAR WARS 100 -> STAR_WARS_100
 
             questionRequested = singleJeopardyBoard.get(key);
@@ -295,10 +295,10 @@ class GameBoard {
         Question questionRequested = null;
 
         while (!validQuestion) {
-            categoryInput = prompter.prompt("Please enter the question category: ", "THOR|STAR TREK", "Invalid category. Please choose from the following (case sensitive): THOR, STAR TREK\n");
+            categoryInput = prompter.prompt("Please enter the question category: ", "(?i)THOR|STAR TREK", "Invalid category. Please choose from the following: THOR, STAR TREK\n");
             valueInput = prompter.prompt("Please enter the question value: ", "200|400|600", "Invalid value.  Please enter one of the following: 200, 400, 600\n");
 
-            key = categoryInput + "_" + valueInput;
+            key = categoryInput.toUpperCase() + "_" + valueInput.toUpperCase();
             key = key.replace(" ", "_"); // BATMAN 100 -> BATMAN_100  || STAR WARS 100 -> STAR_WARS_100
 
             questionRequested = doubleJeopardyBoard.get(key);
@@ -342,8 +342,8 @@ class GameBoard {
         }
 
         while (!isReady) {
-            readyInput = prompter.prompt("Are you ready? (yes or no): ", "yes|no", "Invalid input. Please type yes or no\n");
-            if (readyInput.equals("yes")) {
+            readyInput = prompter.prompt("Are you ready? (yes or no): ", "(?i)yes|no", "Invalid input. Please enter one of the following: Yes, No\n");
+            if (readyInput.equalsIgnoreCase("yes")) {
                 isReady = true;
             } else {
                 System.out.println("Please hurry. We do not have all day!");
