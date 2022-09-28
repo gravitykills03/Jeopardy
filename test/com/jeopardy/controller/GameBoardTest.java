@@ -1,13 +1,10 @@
-package com.jeopardy;
+package com.jeopardy.controller;
 
-import com.apps.util.Prompter;
-import org.junit.Before;
+import com.jeopardy.Player;
+import com.jeopardy.Question;
 import org.junit.Test;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 

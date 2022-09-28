@@ -1,14 +1,18 @@
-package com.jeopardy;
+package com.jeopardy.controller;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
+import com.jeopardy.DoubleJeopardyDollar;
+import com.jeopardy.Player;
+import com.jeopardy.Question;
+import com.jeopardy.SingleJeopardyDollar;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class GameBoard {
+class GameBoard {
     private static final String SINGLE_JEOPARDY_FILE_PATH = "lists/questions1.csv";
     private static final String DOUBLE_JEOPARDY_FILE_PATH = "lists/questions2.csv";
     private Player player;
