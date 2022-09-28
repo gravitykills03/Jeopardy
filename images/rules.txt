@@ -13,14 +13,15 @@ Please read the below "HOW-TO" before you begin! Once complete, enter the player
 
 HOW-TO:
   - After entering name, follow prompts to play!
-  - The game board will be displayed with the following below:
+  - The game board will be displayed similar the following below:
 
-        1 - CategoryA
-        2 - CategoryB
+        CategoryA  | Category B
+        __________________________
+            100         100
 
-        Please enter a question category (1, 2):
+        Please enter a category:
 
-  - At the above prompt, enter a 1 or 2 based on the desired category.
+  - At the above prompt, enter the name of the category you wish to choose!
   - The following prompt will then show after a correct entry:
 
         Please enter a question value:
@@ -31,7 +32,8 @@ HOW-TO:
 * SPECIALS *
 
   - If a DAILY DOUBLE is shown, you will see a prompt asking for your wager. You can wager up-to your
-    current money total
+    current money total.
+        ** If your balance is <= 0. You can only wager between [100, 600]
 
   - For FINAL JEOPARDY, you must commit to a wager before the question is shown.
 
