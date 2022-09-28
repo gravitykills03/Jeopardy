@@ -103,10 +103,12 @@ public class GameBoard {
 
         if (result) {
             System.out.printf("CORRECT!!\tAnswer = %s\nMoney Added: %d\n", question.getAnswer(), questionValue);
+            System.out.println();
             player.addMoney(questionValue);
         }
         else {
             System.out.printf("INCORRECT!!\tAnswer = %s\nMoney Taken: %d\n", question.getAnswer(), questionValue);
+            System.out.println();
             player.subtractMoney(questionValue);
         }
 
@@ -125,13 +127,13 @@ public class GameBoard {
 
         System.out.print("\n\n\nDAILY DOUBLE!!!\n");
         while (!validWager) {
-            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be at least 3 digits (i.e: 100)");
+            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be at least 3 digits (i.e: 100)\n");
 
             wager = Integer.parseInt(wagerString);
 
             if (player.getMoney() <= 0) {
                 if (wager < 100 || wager > 600) {
-                    System.out.println("The wager range is [100, 600] while in a non-positive balance!");
+                    System.out.println("The wager range is [100, 600] while in a non-positive balance!\n");
                 }
                 else {
                     validWager = true;
@@ -139,7 +141,7 @@ public class GameBoard {
             }
             else {
                 if (wager < 100 || wager > player.getMoney()) {
-                    System.out.println("The wager range is [100, " + player.getMoney() + "]!");
+                    System.out.println("The wager range is [100, " + player.getMoney() + "]!\n");
                 }
                 else {
                     validWager = true;
@@ -248,8 +250,8 @@ public class GameBoard {
         Question questionRequested = null;
 
         while (!validQuestion) {
-            categoryInput = prompter.prompt("Please enter the question category: ", "BATMAN|STAR WARS", "Invalid category. Please choose from the following (case sensitive): BATMAN, STAR WARS");
-            valueInput = prompter.prompt("Please enter the question value: ", "100|200|300", "Invalid value.  Please enter one of the following: 100, 200, 300");
+            categoryInput = prompter.prompt("Please enter the question category: ", "BATMAN|STAR WARS", "Invalid category. Please choose from the following (case sensitive): BATMAN, STAR WARS\n");
+            valueInput = prompter.prompt("Please enter the question value: ", "100|200|300", "Invalid value.  Please enter one of the following: 100, 200, 300\n");
 
             key = categoryInput + "_" + valueInput;
             key = key.replace(" ", "_"); // BATMAN 100 -> BATMAN_100  || STAR WARS 100 -> STAR_WARS_100
@@ -265,7 +267,7 @@ public class GameBoard {
 
         System.out.printf("\n\n");
         System.out.println(questionRequested.getQuestion());
-        answer = prompter.prompt("Please input answer: ");
+        answer = prompter.prompt("\nPlease input answer: ");
 
         validateAnswer(answer, questionRequested, questionValue);
         Console.pause(2000L);
@@ -289,8 +291,8 @@ public class GameBoard {
         Question questionRequested = null;
 
         while (!validQuestion) {
-            categoryInput = prompter.prompt("Please enter the question category: ", "THOR|STAR TREK", "Invalid category. Please choose from the following (case sensitive): THOR, STAR TREK");
-            valueInput = prompter.prompt("Please enter the question value: ", "200|400|600", "Invalid value.  Please enter one of the following: 200, 400, 600");
+            categoryInput = prompter.prompt("Please enter the question category: ", "THOR|STAR TREK", "Invalid category. Please choose from the following (case sensitive): THOR, STAR TREK\n");
+            valueInput = prompter.prompt("Please enter the question value: ", "200|400|600", "Invalid value.  Please enter one of the following: 200, 400, 600\n");
 
             key = categoryInput + "_" + valueInput;
             key = key.replace(" ", "_"); // BATMAN 100 -> BATMAN_100  || STAR WARS 100 -> STAR_WARS_100
@@ -306,7 +308,7 @@ public class GameBoard {
 
         System.out.printf("\n\n");
         System.out.println(questionRequested.getQuestion());
-        answer = prompter.prompt("Please input answer: ");
+        answer = prompter.prompt("\nPlease input answer: ");
 
         validateAnswer(answer, questionRequested, questionValue);
         Console.pause(2000L);
@@ -331,12 +333,12 @@ public class GameBoard {
 
         // Player has score less than 100, exit Final Jeopardy to display Results
         if (player.getMoney() < 100) {
-            System.out.println("You do not qualify for Final Jeopardy with a score less than 100.");
+            System.out.println("You do not qualify for Final Jeopardy with a score less than 100.\n");
             return;
         }
 
         while (!isReady) {
-            readyInput = prompter.prompt("Are you ready? (yes or no): ", "yes|no", "Invalid input. Please type yes or no");
+            readyInput = prompter.prompt("Are you ready? (yes or no): ", "yes|no", "Invalid input. Please type yes or no\n");
             if (readyInput.equals("yes")) {
                 isReady = true;
             } else {
@@ -346,12 +348,12 @@ public class GameBoard {
         }
 
         while (!validWager) {
-            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be at least 3 digits (i.e: 100)");
+            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be at least 3 digits (i.e: 100)\n");
 
             wager = Integer.parseInt(wagerString);
 
             if (wager < 100 || wager > player.getMoney()) {
-                System.out.println("The wager range is 100 to player max score: [100, " + player.getMoney() + "]!");
+                System.out.println("The wager range is 100 to player max score: [100, " + player.getMoney() + "]!\n");
             } else {
                 validWager = true;
             }
@@ -364,10 +366,12 @@ public class GameBoard {
 
         if (validAnswer) {
             System.out.printf("\nCORRECT ANSWER!!\t Answer = %s\nMoney Added: %d", answer, wager);
+            System.out.println();
             player.addMoney(wager);
         }
         else {
             System.out.printf("\nINCORRECT ANSWER!!\t Answer = %s\nMoney Taken: %d", answer, wager);
+            System.out.println();
             player.subtractMoney(wager);
         }
     }
