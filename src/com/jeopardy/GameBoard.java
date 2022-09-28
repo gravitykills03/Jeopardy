@@ -52,6 +52,8 @@ public class GameBoard {
             e.printStackTrace();
         }
 
+        dailyDoubleQuestion = rand.nextInt(upperBound);
+
         try {
             List<String> lines = Files.readAllLines(Path.of(doubJeopFilePath));
             DoubleJeopardyDollar[] doubleEnumValues = DoubleJeopardyDollar.values();
@@ -236,6 +238,60 @@ public class GameBoard {
         System.out.println(player.getName() + " = " + player.getMoney());
     }
 
+    public void promptForFinalJeopardyQuestion() {
+        Prompter prompter = new Prompter(new Scanner(System.in));
+        boolean validWager = false;
+        boolean validAnswer = true;
+        boolean isReady = false;
+        String question = "What is the last name of this famous British actor who played Scotty in the new Star Trek reboot?";
+        String answer = "Pegg";
+        String readyInput;
+        String finalQuestionPlayerAnswer;
+        int wager = 0;
+
+        // Player has score less than 100, exit Final Jeopardy to display Results
+        if (player.getMoney() < 100) {
+            System.out.println("You do not qualify for Final Jeopardy with a score less than 100.");
+            return;
+        }
+
+        while (!isReady) {
+            readyInput = prompter.prompt("Are you ready? (yes or no): ", "yes|no", "Invalid input. Please type yes or no");
+            if (readyInput.equals("yes")) {
+                isReady = true;
+            } else {
+                System.out.println("Please hurry. We do not have all day!");
+                Console.pause(4000L);
+            }
+        }
+
+        while (!validWager) {
+            String wagerString = prompter.prompt("Enter your wager: ", "\\d{3,}", "Wager must be greater than 100.");
+
+            wager = Integer.parseInt(wagerString);
+
+            if (wager < 100 || wager > player.getMoney()) {
+                System.out.println("The wager range is 100 to player max score: [100, " + player.getMoney() + "]!");
+            } else {
+                validWager = true;
+            }
+        }
+
+        System.out.println();
+        finalQuestionPlayerAnswer = prompter.prompt(question);
+
+        validAnswer = finalQuestionPlayerAnswer.equalsIgnoreCase(answer);
+
+        if (validAnswer) {
+            System.out.printf("\nCORRECT ANSWER!!\t Answer = %s\nMoney Added: %d", answer, wager);
+            player.addMoney(wager);
+        }
+        else {
+            System.out.printf("\nINCORRECT ANSWER!!\t Answer = %s\nMoney Taken: %d", answer, wager);
+            player.subtractMoney(wager);
+        }
+    }
+
     private void validateAnswer(String answer, Question question, int questionValue) {
         boolean result = question.getAnswer().equalsIgnoreCase(answer);
 
@@ -260,9 +316,9 @@ public class GameBoard {
         while (!validWager) {
             wager = Integer.parseInt(prompter.prompt("Enter your wager: "));
 
-            if (player.getMoney() < 0) {
+            if (player.getMoney() <= 0) {
                 if (wager < 100 || wager > 600) {
-                    System.out.println("The wager range is [100, 600] while in a negative balance!");
+                    System.out.println("The wager range is [100, 600] while in a non-positive balance!");
                 }
                 else {
                     validWager = true;
@@ -280,7 +336,4 @@ public class GameBoard {
 
         return wager;
     }
-
-    // timer()
-
 }
