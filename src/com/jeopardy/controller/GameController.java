@@ -14,7 +14,6 @@ import java.util.*;
 
 public class GameController {
     private GameBoard gameBoard;
-    JFrame adver = new JFrame();
 
     /**
      * Constructor for GameController
@@ -70,7 +69,7 @@ public class GameController {
         displayBanner("rules.txt");
         Console.pause(2000L);
 
-
+        JFrame adver = new JFrame();
         adver.add(new JLabel(new ImageIcon("images/cocacola.jpg")));
         adver.pack();
         adver.setVisible(true);
@@ -104,6 +103,8 @@ public class GameController {
 
         displayBanner("sjComplete.txt");
         Console.pause(3000L);
+
+        JFrame adver = new JFrame();
         adver.add(new JLabel(new ImageIcon("images/debitcard.jpg")));
         adver.pack();
         adver.setVisible(true);
@@ -134,6 +135,8 @@ public class GameController {
         }
 
         displayBanner("djComplete.txt");
+
+        JFrame adver = new JFrame();
         adver.add(new JLabel(new ImageIcon("images/prizes.jpg")));
         adver.pack();
         adver.setVisible(true);
@@ -162,6 +165,8 @@ public class GameController {
 
         Console.pause(2500L);
         Console.clear();
+
+        JFrame adver = new JFrame();
         adver.add(new JLabel(new ImageIcon("images/zebra.jpg")));
         adver.pack();
         adver.setVisible(true);
