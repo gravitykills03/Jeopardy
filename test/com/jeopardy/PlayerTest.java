@@ -1,9 +1,8 @@
-package com.jeopardy.client;
+package com.jeopardy;
 
-import com.jeopardy.Player;
+import static org.junit.Assert.*;
 
-class PlayerTest {
-
+public class PlayerTest {
     public static void main(String[] args) {
         Player player = new Player("Tish",600);
 
@@ -15,4 +14,5 @@ class PlayerTest {
         player.subtractMoney(200);
         System.out.println(player);
     }
+
 }
