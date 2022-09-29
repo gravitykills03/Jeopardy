@@ -185,6 +185,14 @@ public class GameController {
         gameBoard.displayPlayerWithScore();
         System.out.printf("\nTHANK YOU FOR PLAYING!!\n");
         System.out.printf("\n\nCopyright 2022 - Trebek's Legacy LLC\n");
+
+        JFrame adver = new JFrame();
+        adver.add(new JLabel(new ImageIcon("images/trebek.gif")));
+        adver.pack();
+        adver.setVisible(true);
+        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        Console.pause(4500L);
+        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
     }
 
     /**
