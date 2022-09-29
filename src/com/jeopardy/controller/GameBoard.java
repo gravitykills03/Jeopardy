@@ -424,4 +424,11 @@ class GameBoard {
     public void displayPlayerWithScore() {
         System.out.println(player);
     }
+
+    /**
+     * Used for testing player setup
+     */
+    public String getPlayerInfo() {
+        return player.toString();
+    }
 }
