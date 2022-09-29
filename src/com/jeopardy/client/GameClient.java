@@ -10,5 +10,7 @@ class GameClient {
 
         // run game
         gameController.run();
+
+        System.exit(0);
     }
 }

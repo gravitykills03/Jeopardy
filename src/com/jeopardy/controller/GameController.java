@@ -173,8 +173,9 @@ public class GameController {
         adver.add(new JLabel(new ImageIcon(target)));
         adver.pack();
         adver.setSize(600, 400);
+        adver.toFront();
+        adver.setAlwaysOnTop(true);
         adver.setVisible(true);
-        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         Console.pause(delay);
         adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
