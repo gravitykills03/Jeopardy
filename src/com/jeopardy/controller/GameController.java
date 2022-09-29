@@ -71,7 +71,7 @@ public class GameController {
         Console.pause(2000L);
 
 
-        adver.add(new JLabel(new ImageIcon("images/coke.jpg")));
+        adver.add(new JLabel(new ImageIcon("images/cocacola.jpg")));
         adver.pack();
         adver.setVisible(true);
         adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
