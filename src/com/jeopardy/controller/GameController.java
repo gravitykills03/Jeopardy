@@ -2,10 +2,8 @@ package com.jeopardy.controller;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
-import com.apps.util.client.SplashAppMain;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +24,11 @@ public class GameController {
      * Calls necessary methods in correct order to play a single game
      */
     public void run() {
+        displayAd("images/cocacola.jpg", 3000L);
+        displayAd("images/debitcard.jpg", 3000L);
+        displayAd("images/prizes.jpg", 3000L);
+        displayAd("images/zebra.jpg", 3000L);
+        displayAd("images/trebek.gif", 4500L);
         welcomeScreen();
         playerSetup();
         playSJ();
@@ -69,13 +72,7 @@ public class GameController {
         displayBanner("rules.txt");
         Console.pause(2000L);
 
-        JFrame adver = new JFrame();
-        adver.add(new JLabel(new ImageIcon("images/cocacola.jpg")));
-        adver.pack();
-        adver.setVisible(true);
-        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        Console.pause(3000L);
-        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
+        displayAd("images/cocacola.jpg", 3000L);
 
 
         String name = prompter.prompt("Enter player name: ");
@@ -104,13 +101,7 @@ public class GameController {
         displayBanner("sjComplete.txt");
         Console.pause(3000L);
 
-        JFrame adver = new JFrame();
-        adver.add(new JLabel(new ImageIcon("images/debitcard.jpg")));
-        adver.pack();
-        adver.setVisible(true);
-        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        Console.pause(3000L);
-        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
+        displayAd("images/debitcard.jpg", 3000L);
     }
 
     /**
@@ -136,14 +127,7 @@ public class GameController {
 
         displayBanner("djComplete.txt");
 
-        JFrame adver = new JFrame();
-        adver.add(new JLabel(new ImageIcon("images/prizes.jpg")));
-        adver.pack();
-        adver.setVisible(true);
-        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        Console.pause(3000L);
-        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
-        Console.pause(3000L);
+        displayAd("images/prizes.jpg", 3000L);
 
     }
 
@@ -166,13 +150,7 @@ public class GameController {
         Console.pause(2500L);
         Console.clear();
 
-        JFrame adver = new JFrame();
-        adver.add(new JLabel(new ImageIcon("images/zebra.jpg")));
-        adver.pack();
-        adver.setVisible(true);
-        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        Console.pause(3000L);
-        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
+        displayAd("images/zebra.jpg", 3000L);
     }
 
     /**
@@ -186,12 +164,24 @@ public class GameController {
         System.out.printf("\nTHANK YOU FOR PLAYING!!\n");
         System.out.printf("\n\nCopyright 2022 - Trebek's Legacy LLC\n");
 
+        displayAd("images/trebek.gif", 4500L);
+    }
+
+    /**
+     * Helper method to display Advertisements
+     *
+     * @param target - name of the file containing ad
+     */
+    private void displayAd(String target, long delay) {
         JFrame adver = new JFrame();
-        adver.add(new JLabel(new ImageIcon("images/trebek.gif")));
+
+        adver.add(new JLabel(new ImageIcon(target)));
         adver.pack();
+        adver.setSize(600, 400);
         adver.setVisible(true);
         adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        Console.pause(4500L);
+
+        Console.pause(delay);
         adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
     }
 
