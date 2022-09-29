@@ -2,7 +2,11 @@ package com.jeopardy.controller;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
+import com.apps.util.client.SplashAppMain;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +14,7 @@ import java.util.*;
 
 public class GameController {
     private GameBoard gameBoard;
+    JFrame adver = new JFrame();
 
     /**
      * Constructor for GameController
@@ -60,9 +65,19 @@ public class GameController {
      * Prompts the user to enter their player's name
      */
     private void playerSetup() {
+
         Prompter prompter = new Prompter(new Scanner(System.in));
         displayBanner("rules.txt");
         Console.pause(2000L);
+
+
+        adver.add(new JLabel(new ImageIcon("images/coke.jpg")));
+        adver.pack();
+        adver.setVisible(true);
+        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        Console.pause(3000L);
+        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
+
 
         String name = prompter.prompt("Enter player name: ");
         gameBoard.playerSetup(name);
@@ -76,8 +91,6 @@ public class GameController {
     private void playSJ() {
         while(!gameBoard.isJeopardyComplete()) {
             displayBanner("sj.txt");
-
-
             gameBoard.displaySingleJeopardyBoard();
             System.out.println();
             System.out.println("SCORE:");
@@ -91,6 +104,12 @@ public class GameController {
 
         displayBanner("sjComplete.txt");
         Console.pause(3000L);
+        adver.add(new JLabel(new ImageIcon("images/debitcard.jpg")));
+        adver.pack();
+        adver.setVisible(true);
+        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        Console.pause(3000L);
+        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
     }
 
     /**
@@ -115,6 +134,12 @@ public class GameController {
         }
 
         displayBanner("djComplete.txt");
+        adver.add(new JLabel(new ImageIcon("images/prizes.jpg")));
+        adver.pack();
+        adver.setVisible(true);
+        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        Console.pause(3000L);
+        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
         Console.pause(3000L);
 
     }
@@ -137,6 +162,12 @@ public class GameController {
 
         Console.pause(2500L);
         Console.clear();
+        adver.add(new JLabel(new ImageIcon("images/zebra.jpg")));
+        adver.pack();
+        adver.setVisible(true);
+        adver.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        Console.pause(3000L);
+        adver.dispatchEvent(new WindowEvent(adver, WindowEvent.WINDOW_CLOSING));
     }
 
     /**
