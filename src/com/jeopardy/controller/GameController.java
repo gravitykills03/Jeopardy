@@ -24,11 +24,6 @@ public class GameController {
      * Calls necessary methods in correct order to play a single game
      */
     public void run() {
-        displayAd("images/cocacola.jpg", 3000L);
-        displayAd("images/debitcard.jpg", 3000L);
-        displayAd("images/prizes.jpg", 3000L);
-        displayAd("images/zebra.jpg", 3000L);
-        displayAd("images/trebek.gif", 4500L);
         welcomeScreen();
         playerSetup();
         playSJ();
